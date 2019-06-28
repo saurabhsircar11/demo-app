@@ -1,0 +1,9 @@
+import React from 'react'
+import Whisky from './Whisky'
+
+
+const WhiskyGrid = ({ whiskies }) => (
+    <div>
+        {whiskies.map(whisky => (<Whisky key={whisky.id} whisky={whisky} />))}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+    </div>
+)

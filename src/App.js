@@ -1,6 +1,21 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { createStore, applyMiddleware } from 'redux'
+import { createEpicMiddleware } from 'redux-observable'
+import { Provider } from 'react-redux'
+import rootReducer from './root'
+import { rootEpic } from './epics';
+
+
+const epicMiddleWare = createEpicMiddleware(rootEpic)
+
+const store = createStore(rootReducer, applyMiddleware(epicMiddleWare))
+
+const appWithProvider = (
+  <Provider store={store}>
+    <App />
+  </Provider>)
 
 function App() {
   return (
@@ -23,4 +38,4 @@ function App() {
   );
 }
 
-export default App;
+export default appWithProvider;
