@@ -7,7 +7,7 @@ const initialState = {
 }
 
 
-export default function rootReduxer(state = initialState, action) {
+export default function rootReducer(state = initialState, action) {
     switch (action.type) {
 
         case FETCH_WHISKIES:

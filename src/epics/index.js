@@ -1,5 +1,5 @@
 import { combineEpics } from 'redux-observable';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import 'rxjs/add/operator/switchMap'
 import 'rxjs/add/operator/map'
 import 'rxjs/add/observable/of'
@@ -19,19 +19,19 @@ function fetchWhiskiesEpic(action$) {
     return action$
         .ofType(FETCH_WHISKIES)
         .switchMap(() => {
-            return axios.get(url).then((data) => {
-                return data
-            })
-                .map(data => data.results)
+            return from(axios.get(url).then(response=>response.data))
+                .map(data => {
+                    console.log(data) 
+                    return data.results })
                 .map(whiskies => whiskies.map(whisky => ({
                     id: whisky.id,
                     title: whisky.title,
-                    imageUrl: whisky.img_url
+                    imageUrl: whisky.detail_img_url
                 })))
                 .map(whiskies => whiskies.filter(whisky => !!whisky.imageUrl))
         })
         .map(whiskies => fetchWhiskiesSuccess(whiskies))
-        .catch(error=> Observable.of(fetchWhiskiesFailure(error.message)))
+        .catch(error => Observable.of(fetchWhiskiesFailure(error.message)))
 }
 
 

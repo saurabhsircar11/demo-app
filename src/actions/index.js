@@ -12,7 +12,7 @@ export const fetchWhiskiesSuccess = (whiskies) => ({
     payload: whiskies
 });
 
-export const fetchWhiskiesFailures=(message)=>({
+export const fetchWhiskiesFailure=(message)=>({
     type: FETCH_WHISKIES_FAILURE,
     payload: message
 })

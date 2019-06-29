@@ -1,41 +1,31 @@
-import React from 'react';
+import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { createStore, applyMiddleware } from 'redux'
-import { createEpicMiddleware } from 'redux-observable'
-import { Provider } from 'react-redux'
-import rootReducer from './root'
-import { rootEpic } from './epics';
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { fetchWhiskies } from './actions'
+import WhiskyGrid from './components/WhiskyGrid'
 
 
-const epicMiddleWare = createEpicMiddleware(rootEpic)
 
-const store = createStore(rootReducer, applyMiddleware(epicMiddleWare))
 
-const appWithProvider = (
-  <Provider store={store}>
-    <App />
-  </Provider>)
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  render() {
+    const { fetchWhiskies, isLoading, error, whiskies } = this.props
+    return (
+      <div className="App">
+        <button onClick={fetchWhiskies}>Fetch Whiskies</button>
+        {isLoading && <h1>Fetching data</h1>}
+        {!isLoading && !error && <WhiskyGrid whiskies={whiskies} />}
+        {error && <h1>{error}</h1>}
+      </div>
+    );
+  }
 }
 
-export default appWithProvider;
+const mapSateToProps = state => ({ ...state })
+
+const mapDispatchToProps = dispatch => bindActionCreators({ fetchWhiskies }, dispatch)
+
+export default connect(mapSateToProps, mapDispatchToProps)(App);
